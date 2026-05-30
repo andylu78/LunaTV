@@ -1,6 +1,4 @@
 name: 自动同步上游LunaTV
-permissions:
-  contents: write
 on:
   schedule:
     - cron: '0 */6 * * *'
