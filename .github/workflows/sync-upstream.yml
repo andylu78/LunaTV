@@ -1,7 +1,8 @@
 name: 自动同步上游LunaTV
-# 新增权限配置，允许读写工作流文件
+# 核心修复：授予读写仓库、工作流文件的全部权限
 permissions:
   contents: write
+  workflows: write
 on:
   schedule:
     - cron: '0 */6 * * *'
