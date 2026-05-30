@@ -1,0 +1,33 @@
+name: 自动同步上游LunaTV
+on:
+  schedule:
+    # UTC时区，每6小时自动同步一次
+    - cron: '0 */6 * * *'
+  # 支持页面手动一键运行同步
+  workflow_dispatch:
+
+jobs:
+  sync-fork:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取完整仓库提交记录
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 设置Git提交账号
+        run: |
+          git config user.name "AutoSyncBot"
+          git config user.email "autosync@github.com"
+
+      - name: 绑定上游原仓库
+        run: git remote add upstream https://github.com/SzeMeng76/LunaTV.git
+
+      - name: 拉取上游所有更新
+        run: git fetch upstream
+
+      - name: 合并上游main分支代码
+        run: git merge upstream/main --allow-unrelated-histories
+
+      - name: 推送同步后的代码到你的Fork仓库
+        run: git push origin main
